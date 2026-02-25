@@ -1,0 +1,28 @@
+version: '3.9'
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: uyumbot-ui
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - uyumbot-net
+
+  backend:
+    image: uyumbot-backend:latest   # replace with actual backend image
+    container_name: uyumbot-backend
+    ports:
+      - "8084:8084"
+    restart: unless-stopped
+    networks:
+      - uyumbot-net
+
+networks:
+  uyumbot-net:
+    driver: bridge

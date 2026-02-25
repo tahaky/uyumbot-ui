@@ -1,0 +1,48 @@
+<div class="chat-wrapper">
+  <header class="chat-header">
+    <div class="header-title">
+      <span class="bot-icon">🤖</span>
+      <h1>UyumBot</h1>
+    </div>
+    <span class="session-id" title="Session ID">{{ sessionId }}</span>
+  </header>
+
+  <div class="message-container" #messageContainer>
+    <div
+      *ngFor="let msg of messages"
+      class="message-row"
+      [class.user-row]="msg.role === 'user'"
+      [class.bot-row]="msg.role === 'bot'"
+    >
+      <div class="avatar" *ngIf="msg.role === 'bot'">🤖</div>
+      <div class="bubble" [class.user-bubble]="msg.role === 'user'" [class.bot-bubble]="msg.role === 'bot'">
+        <p>{{ msg.text }}</p>
+        <span class="timestamp">{{ msg.timestamp | date:'HH:mm' }}</span>
+      </div>
+      <div class="avatar user-avatar" *ngIf="msg.role === 'user'">👤</div>
+    </div>
+
+    <div class="message-row bot-row" *ngIf="isLoading">
+      <div class="avatar">🤖</div>
+      <div class="bubble bot-bubble typing-indicator">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </div>
+
+  <footer class="chat-footer">
+    <textarea
+      class="message-input"
+      [(ngModel)]="inputText"
+      (keydown)="onKeydown($event)"
+      placeholder="Mesajınızı yazın... (Enter göndermek için)"
+      rows="1"
+      [disabled]="isLoading"
+    ></textarea>
+    <button class="send-btn" (click)="sendMessage()" [disabled]="isLoading || !inputText.trim()">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+      </svg>
+    </button>
+  </footer>
+</div>
